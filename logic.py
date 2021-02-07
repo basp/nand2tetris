@@ -35,8 +35,20 @@ class LC:
     def __init__(self, name):
         self.name = name
 
+    def reset(self):
+        pass
+
     def eval(self):
-        return
+        pass
+
+class Gate1(LC):
+    def __init__(self, name):
+        LC.__init__(self, name)
+        self.in_ = Pin(self, 'in', activate = True)
+        self.out = Pin(self, 'out')
+
+    def reset(self):
+        self.in_.set(0)
 
 class Gate2(LC):
     def __init__(self, name):
@@ -44,6 +56,10 @@ class Gate2(LC):
         self.a = Pin(self, 'a', activate = True)
         self.b = Pin(self, 'b', activate = True)        
         self.out = Pin(self, 'out')
+
+    def reset(self):
+        self.a.set(0)
+        self.b.set(0)
 
 class Nand(Gate2):
     def __init__(self, name):

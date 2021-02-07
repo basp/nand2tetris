@@ -1,11 +1,9 @@
 from logic import *
 import unittest
 
-class Not(LC):
+class Not(Gate1):
     def __init__(self, name):
-        LC.__init__(self, name)
-        self.in_ = Pin(self, 'in', activate = True)
-        self.out = Pin(self, 'out')
+        Gate1.__init__(self, name)
         self.nand1 = Nand('NAND1')
         self.in_.connect(self.nand1.a)
         self.in_.connect(self.nand1.b)
