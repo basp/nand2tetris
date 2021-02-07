@@ -24,10 +24,7 @@ class Pin:
         if self.activate:
             self.owner.eval()
         if self.monitor:
-            owner = self.owner.name
-            name = self.name
-            value = self.value
-            print(f"Connector {owner}-{name} set to {value}")
+            print(f"{self.owner.name}-{self.name} set to {self.value}")
         for conn in self.connections:
             conn.set(value)
 
