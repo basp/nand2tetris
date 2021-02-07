@@ -2,12 +2,12 @@ import unittest
 
 # From http://openbookproject.net/courses/python4fun/logic.html
 
-class Connector:
-    def __init__(self, owner, name, activates = 0, monitor = 0):
+class Pin:
+    def __init__(self, owner, name, activate = False, monitor = False):
         self.value = None
         self.owner = owner
         self.name = name
-        self.activates = activates
+        self.activate = activate
         self.monitor = monitor
         self.connections = []
 
@@ -21,10 +21,13 @@ class Connector:
         if self.value == value:
             return
         self.value = int(value)
-        if self.activates:
+        if self.activate:
             self.owner.eval()
         if self.monitor:
-            print(f"Connector {self.owner.name}-{self.name} set to {self.value}")
+            owner = self.owner.name
+            name = self.name
+            value = self.value
+            print(f"Connector {owner}-{name} set to {value}")
         for conn in self.connections:
             conn.set(value)
 
@@ -38,9 +41,9 @@ class LC:
 class Gate2(LC):
     def __init__(self, name):
         LC.__init__(self, name)
-        self.a = Connector(self, 'a', activates = 1)
-        self.b = Connector(self, 'b', activates = 1)
-        self.out = Connector(self, 'out')
+        self.a = Pin(self, 'a', activate = True)
+        self.b = Pin(self, 'b', activate = True)        
+        self.out = Pin(self, 'out')
 
 class Nand(Gate2):
     def __init__(self, name):
@@ -49,7 +52,7 @@ class Nand(Gate2):
     def eval(self):
         self.out.set(not (self.a.value and self.b.value))
 
-class Tests(unittest.TestCase):
+class Test(unittest.TestCase):
     def test_nand(self):
         g = Nand('NAND')
         self.assertIsNone(g.out.value)
