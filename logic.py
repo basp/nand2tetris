@@ -50,6 +50,9 @@ class Gate1(LC):
     def reset(self):
         self.in_.set(0)
 
+    def set(self, value):
+        self.in_.set(value)
+
 class Gate2(LC):
     def __init__(self, name):
         LC.__init__(self, name)
@@ -60,6 +63,9 @@ class Gate2(LC):
     def reset(self):
         self.a.set(0)
         self.b.set(0)
+
+    def set(self, pin, value):
+        self.__dict__[pin].set(value)
 
 class Nand(Gate2):
     def __init__(self, name):

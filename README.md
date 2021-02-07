@@ -1,2 +1,2 @@
 # nand2tetris
-NAND2Tetris course assignments, notes and stuff.
+Things related to *The Elements of Computing Systems* by Nisan and Schocken.
