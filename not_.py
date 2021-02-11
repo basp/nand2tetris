@@ -17,7 +17,6 @@ class Test(unittest.TestCase):
         self.assertEqual(not_.out.value, 1)
         not_.in_.set(1)
         self.assertEqual(not_.out.value, 0)
-    
 
 if __name__ == '__main__':
     unittest.main()

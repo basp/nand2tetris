@@ -75,14 +75,15 @@ class Test(unittest.TestCase):
     def test_nand(self):
         g = Nand('NAND')
         self.assertIsNone(g.out.value)
-        g.a.set(0)
-        self.assertEqual(g.out.value, 1)
-        g.b.set(0)
-        self.assertEqual(g.out.value, 1)
-        g.a.set(1)
-        self.assertEqual(g.out.value, 1)
-        g.b.set(1)
-        self.assertEqual(g.out.value, 0)
+        cases = [
+            (0, 0, 1),
+            (1, 0, 1),
+            (0, 1, 1),
+            (1, 1, 0)]
+        for (a, b, e) in cases:
+            g.set('a', a)
+            g.set('b', b)
+            self.assertEqual(g.out.value, e)
 
 if __name__ == '__main__':
     unittest.main()
