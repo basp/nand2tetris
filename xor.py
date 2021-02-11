@@ -3,6 +3,7 @@ from or_ import Or
 from and_ import And
 import unittest
 
+# (a or b) and (a nand b)
 class Xor(Gate2):
     def __init__(self, name):
         Gate2.__init__(self, name)
@@ -19,17 +20,17 @@ class Xor(Gate2):
 
 class Test(unittest.TestCase):
     def test_xor(self):
-        xor_ = Xor('XOR')
-        self.assertIsNone(xor_.out.value)
+        xor = Xor('XOR')
+        self.assertIsNone(xor.out.value)
         cases = [
             (0, 0, 0),
             (0, 1, 1),
             (1, 0, 1),
             (1, 1, 0)]
         for (a, b, e) in cases:
-            xor_.set('a', a)
-            xor_.set('b', b)
-            self.assertEqual(xor_.out.value, e)
+            xor.set('a', a)
+            xor.set('b', b)
+            self.assertEqual(xor.out.value, e)
 
 if __name__ == '__main__':
     unittest.main()

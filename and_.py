@@ -2,6 +2,7 @@ from logic import *
 from not_ import Not
 import unittest
 
+# not (a nand b)
 class And(Gate2):
     def __init__(self, name):
         Gate2.__init__(self, name)
