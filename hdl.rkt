@@ -25,19 +25,12 @@
         (for ([edge edges])
           (send edge set val))))))
 
-(define 1gate%
-  (class gate%
-    (init name)
-    (field (in (new pin% [name "in"] [owner this] [activates #t])))
-    (field (out (new pin% [name "out"] [owner this])))
-    (super-new [name name])))
-
 (define 2gate%
   (class gate%
     (init name)
     (field (a (new pin% [name "a"] [owner this] [activates #t])))
     (field (b (new pin% [name "b"] [owner this] [activates #t])))
-    (field (out (new pin% [name "out"] [owner this] [monitor #f])))
+    (field (out (new pin% [name "out"] [owner this])))
     (super-new [name name])))
     
 (define nand%
@@ -50,23 +43,14 @@
             [b (get-field value b)])
         (send out set (not (and a b)))))))
 
-(define (internal-name name owner)
-  (format "~a[~a]" owner name))
-
-(define not%
-  (class 1gate%
+(define 1gate%
+  (class gate%
     (init name)
-    (define nand (new nand% [name (internal-name "nand" name)]))
-    (let ([nand-a (get-field a nand)]
-          [nand-b (get-field b nand)]
-          [nand-out (get-field out nand)])
-      (send in connect nand-a)
-      (send in connect nand-b)
-      (send nand-out connect out))
-    (super-new [name name])
-    (inherit-field in out)))
+    (field (in (new pin% [name "in"] [owner this] [activates #t])))
+    (field (out (new pin% [name "out"] [owner this])))
+    (super-new [name name])))
 
-(define *not%
+(define not-bi%
   (class 1gate%
     (init name)
     (super-new [name name])
@@ -75,21 +59,26 @@
       (let ([in (get-field value in)])
         (send out set (not in))))))
 
+(define (internal-name obj owner) (format "~a[~a]" owner obj))
+
+(define not%
+  (class 1gate%
+    (init name)
+    (super-new [name name])
+    (inherit-field in out)    
+    (define nand (new nand% [name (internal-name "nand" name)]))
+    (send in connect (get-field a nand))
+    (send in connect (get-field b nand))
+    (send (get-field out nand) connect out)))
+
 (define and%
   (class 2gate%
     (init name)
+    (super-new [name name])
+    (inherit-field a b out)
     (define nand (new nand% [name (internal-name "nand" name)]))
     (define not (new not% [name (internal-name "not" name)]))
-    (super-new [name name])
-    (inherit-field a b out)))
-
-
-
-
-
-
-
-
-
-
-
+    (send a connect (get-field a nand))
+    (send b connect (get-field b nand))
+    (send (get-field out nand) connect (get-field in not))
+    (send (get-field out not) connect out)))
